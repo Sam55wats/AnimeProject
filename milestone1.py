@@ -26,11 +26,10 @@ class AnimeScraper:
     def get_short_summary(self, soup):
         return soup.find('span', id = 'Short_Summary').find_next('p').text
 
-    '''long_heading = soup.find('span', id = 'Long_Summary')
-    contents_after = long_heading.parent.find_next_siblings('p')
-    long_summary = ""
-    for paragraph in contents_after:
-        long_summary += paragraph.text
-    #print(long_summary)
-    '''
-
+    def get_long_summary(self, soup):
+        long_heading = soup.find('span', id = 'Long_Summary')
+        contents_after = long_heading.parent.find_next_siblings('p')
+        long_summary = ""
+        for paragraph in contents_after:
+            long_summary += paragraph.text
+        return long_summary
