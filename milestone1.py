@@ -33,3 +33,12 @@ class AnimeScraper:
         for paragraph in contents_after:
             long_summary += paragraph.text
         return long_summary
+    
+    def scrape(self):
+        for url in self.chapter_urls:
+            page_content = self.get_page_content(url)
+
+            title = self.get_chapter_title(soup)
+            chapter_number = self.get_chapter_number(soup)
+            short_summary = self.get_short_summary(soup)
+            long_summary = self.get_long_summary(soup)
