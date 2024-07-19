@@ -28,11 +28,14 @@ class AnimeScraper:
         return soup.find('span', id = 'Short_Summary').find_next('p').text
 
     def get_long_summary(self, soup):
+        long_summary = ""
+
         long_heading = soup.find('span', id = 'Long_Summary')
         contents_after = long_heading.parent.find_next_siblings('p')
-        long_summary = ""
+
         for paragraph in contents_after:
             long_summary += paragraph.text
+
         return long_summary
     
     def scrape(self):
@@ -44,11 +47,20 @@ class AnimeScraper:
             short_summary = self.get_short_summary(page_content)
             long_summary = self.get_long_summary(page_content)
 
-            print(f'Chapter {chapter_number}: {title}\n')
-            print(f'Short Summary \n {short_summary}\n')
-            print(f'Long Summary \n {long_summary}')
+            chapter_data = {
+                'chapter_number': chapter_number,
+                'title': title,
+                'short_summary': short_summary,
+                'long_summary': long_summary
+            }
 
-    def main():
-        scraper = AnimeScraper(AnimeScraper.BASE_URL, AnimeScraper.CHAPTER_COUNT)
-        scraper.scrape()
+            with open(f'one_piece_chapter_{chapter_number}.json', 'w') as f:
+                json.dump(chapter_data, f, indent = 2)
 
+
+def main():
+    scraper = AnimeScraper(AnimeScraper.BASE_URL, AnimeScraper.CHAPTER_COUNT)
+    scraper.scrape()
+
+if __name__ == "__main__":
+    main()
