@@ -54,7 +54,7 @@ class AnimeScraper:
                 'long_summary': long_summary
             }
 
-            with open(f'one_piece_chapter_{chapter_number}.json', 'w') as f:
+            with open(f'MangaChapters/one_piece_chapter_{chapter_number}.json', 'w') as f:
                 json.dump(chapter_data, f, indent = 2)
 
 
