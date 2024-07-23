@@ -11,7 +11,7 @@ class AnimeScraper:
         self.episode_urls = self.get_episode_urls()
     
     def get_episode_urls(self):
-        return [f'{self.base_url}{i}' for i in range(1, self.chapter_count + 1)]
+        return [f'{self.base_url}{i}' for i in range(1, self.episode_count + 1)]
     
     def get_page_content(self, url):
         page = requests.get(url).text
@@ -36,4 +36,31 @@ class AnimeScraper:
             long_summary += paragraph.text
 
         return long_summary
+    
+    def scrape(self):
+        for url in self.episode_urls:
+            page_content = self.get_page_content(url)
+
+            title = self.get_episode_title(page_content)
+            episode_number = self.get_episode_num(page_content)
+            short_summary = self.get_short_summary(page_content)
+            long_summary = self.get_long_summary(page_content)
+
+            episode_data = {
+                'chapter_number': episode_number,
+                'title': title,
+                'short_summary': short_summary,
+                'long_summary': long_summary
+            }
+
+            with open(f'AnimeEpisodes/one_piece_episode_{episode_number}.json', 'w') as f:
+                json.dump(episode_data, f, indent = 2)
+
+def main():
+    scraper = AnimeScraper(AnimeScraper.BASE_URL, 10)
+    scraper.scrape()
+
+if __name__ == "__main__":
+    main()
+
     
