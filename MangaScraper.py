@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
-class AnimeScraper:
+class MangaScraper:
     BASE_URL = 'https://onepiece.fandom.com/wiki/Chapter_'
     CHAPTER_COUNT = 200
     
@@ -59,7 +59,7 @@ class AnimeScraper:
 
 
 def main():
-    scraper = AnimeScraper(AnimeScraper.BASE_URL, AnimeScraper.CHAPTER_COUNT)
+    scraper = MangaScraper(MangaScraper.BASE_URL, MangaScraper.CHAPTER_COUNT)
     scraper.scrape()
 
 if __name__ == "__main__":
