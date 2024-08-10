@@ -37,6 +37,16 @@ class AnimeScraper:
 
         return long_summary
     
+    def get_characters(self, soup):
+        char_section_title = soup.find('span', id = 'Characters_in_Order_of_Appearance')
+        characters = []
+
+        if char_section_title:
+            char_list = char_section_title.find_next('ul').find_all('li')
+            characters = [li.text.strip() for li in char_list]
+        
+        return characters
+    
     def scrape(self):
         for url in self.episode_urls:
             page_content = self.get_page_content(url)
@@ -45,19 +55,37 @@ class AnimeScraper:
             episode_number = self.get_episode_num(page_content)
             short_summary = self.get_short_summary(page_content)
             long_summary = self.get_long_summary(page_content)
+            characters = self.get_characters(page_content)
+
 
             episode_data = {
                 'chapter_number': episode_number,
                 'title': title,
                 'short_summary': short_summary,
-                'long_summary': long_summary
+                'long_summary': long_summary,
+                'characters': characters
+
             }
 
             with open(f'AnimeEpisodes/one_piece_episode_{episode_number}.json', 'w') as f:
                 json.dump(episode_data, f, indent = 2)
+    
+    def character_appearances(directory):
+        character_appearances = {}
+
+        for filename in glob.glob(os.path.join(directory, '*.json')):
+            with open(filename, 'r') as f:
+                data = json.load(f)
+
+                number = data['chapter_number']
+
+                for character in data.get('characters', []):
+                    if character not in character_appearances:
+                        character_appearances[character] = []
+                    character_appearances[character].append(number)
 
 def main():
-    scraper = AnimeScraper(AnimeScraper.BASE_URL, 10)
+    scraper = AnimeScraper(AnimeScraper.BASE_URL, 1)
     scraper.scrape()
 
 if __name__ == "__main__":
