@@ -1,6 +1,3 @@
-import json
-import glob
-import os
 from scraper import Scraper
 
 class MangaScraper(Scraper):
@@ -20,24 +17,7 @@ class MangaScraper(Scraper):
             characters = [li.text.strip() for li in char_list]
         
         return characters
-
-    def character_appearances(directory):
-        character_appearances = {}
-
-        for filename in glob.glob(os.path.join(directory, '*.json')):
-            with open(filename, 'r') as f:
-                data = json.load(f)
-
-                number = data['chapter_number']
-
-                for character in data.get('characters', []):
-                    if character not in character_appearances:
-                        character_appearances[character] = []
-                    character_appearances[character].append(number)
-        
-        return character_appearances
    
-
 def main():
     scraper = MangaScraper(MangaScraper.BASE_URL, 200)
     scraper.scrape(MangaScraper.DIRECTORY)
