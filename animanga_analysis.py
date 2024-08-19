@@ -42,16 +42,5 @@ class Analyzer:
 
         return summaries
         
-    def build_model(self):
-        pipeline = Pipeline([
-            (const.FEATURES, FeatureUnion([
-
-                (const.TEXT_PIPELINE, Pipeline([
-                    (const.VECT, CountVectorizer(tokenizer=self.preprocessor)),
-                    (const.TFIDF, TfidfTransformer())
-                ]))
-            ]))
-        ])
-        
-        return pipeline
+    
 
