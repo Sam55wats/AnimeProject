@@ -1,7 +1,6 @@
 import re
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.pipeline import Pipeline, FeatureUnion
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
@@ -42,5 +41,11 @@ class Analyzer:
 
         return summaries
         
-    
+    def preprocess_summaries(self, summaries):
+        preprocessed = []
+
+        for summary in summaries:
+            preprocessed.append(' '.join(self.preprocessor(summary)))
+                                
+        return preprocessed
 
