@@ -1,5 +1,5 @@
 import re
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.pipeline import Pipeline, FeatureUnion
 from nltk.stem import WordNetLemmatizer
@@ -34,25 +34,15 @@ class Analyzer:
     
     def load_summaries(self, directory):
         summaries = []
+
         for filename in glob.glob(os.path.join(directory, '*.json')):
             with open(filename, 'r') as f:
                 data = json.load(f)
-                summaries.append(data['short_summary'])
+                summaries.append(data['long_summary'])
+
         return summaries
-
-    def preprocess_summaries(self, summaries):
-        preprocessed = []
-        for summary in summaries:
-            preprocessed
-
+        
     def build_model(self):
-        """Build the model
-
-        Returns
-        -------
-        sklearn.pipeline.Pipeline
-            The model
-        """
         pipeline = Pipeline([
             (const.FEATURES, FeatureUnion([
 
@@ -64,4 +54,4 @@ class Analyzer:
         ])
         
         return pipeline
- 
+
