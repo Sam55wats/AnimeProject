@@ -1,10 +1,7 @@
 import json
 import requests
 from bs4 import BeautifulSoup
-from collections import Counter
-import string
-import glob
-import os
+from animanga_analysis import Analyzer
 
 class Scraper:
     def __init__(self, base_url, count):
@@ -66,32 +63,4 @@ class Scraper:
 
             with open(f'{directory}/one_piece_{number}.json', 'w') as f:
                 json.dump(data, f, indent = 2)
-
-    def get_word_frequencies(self, summary, count):
-        summary = summary.translate(str.maketrans('','', string.punctuation))
-
-        split_summary = summary.split() 
-
-        split_summary = [x.lower() for x in split_summary]
-
-        counter = Counter(split_summary)
-
-        frequencies = counter.most_common(count)
-
-        return frequencies
-
-    def character_appearances(directory):
-        character_appearances = {}
-
-        for filename in glob.glob(os.path.join(directory, '*.json')):
-            with open(filename, 'r') as f:
-                data = json.load(f)
-
-                number = data['number']
-
-                for character in data.get('characters', []):
-                    if character not in character_appearances:
-                        character_appearances[character] = []
-                    character_appearances[character].append(number)
-        
-        return character_appearances
+    
