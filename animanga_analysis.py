@@ -1,6 +1,7 @@
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem import WordNetLemmatizer
+from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import constants as const
@@ -54,10 +55,12 @@ class Analyzer():
         tokens = [w for w in tokens if w not in stopwords.words('english')]
 
         lemmatizer = WordNetLemmatizer() 
+        stemmer = PorterStemmer()
 
         clean_tokens = []
         for tok in tokens:
-            clean_tok = lemmatizer.lemmatize(tok).strip()
+            lem_tok = lemmatizer.lemmatize(tok).strip()
+            clean_tok = stemmer.stem(lem_tok)
             clean_tokens.append(clean_tok)
 
         return clean_tokens
